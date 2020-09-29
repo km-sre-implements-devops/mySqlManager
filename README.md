@@ -3,13 +3,17 @@
 #### Script para crear, modificar, borrar, agregar tablas y usuarios de base de datos MySql
 
 Para configurar la conexion al servidor y los ambientes, se debe modificar el archivo de configuracion config/enviroments.ini
+
 $ vim config/enviroments.ini
 
 [develoment]
 
 databaseServerIP = string de conexion o URL o ip del servidor
+
 databaseUserName = admin # usuario con el que se va a conectar
+
 databaseUserPassword = password
+
 charSet = utf8mb4
 
 [production]
@@ -19,7 +23,7 @@ databaseUserName = admin # usuario con el que se va a conectar
 databaseUserPassword = password
 charSet = utf8mb4
 
-### ################## Uso del script #####################
+### Uso del script:
 
 usage: mySqlManager.py [-h] [-e ENVIROMENT] [-d DBNAME] [-c CREATEUSER] [-p PUSER] [-pdb PDATABASE] [-s]
 
@@ -44,21 +48,28 @@ optional arguments:
 #### Ejemplos:
 
 Mostrar todas las base de datos desde el server MySql
+
 $ python3 mySqlManager.py -e develoment --showdbs
 
 $ {'message': ['information_schema', 'innodb', 'mysql', 'performance_schema','sys', 'tmp']}
 
+
 Crear base de datos en el server MySql
+
 $ python3 mySqlManager.py -e develoment -d Nombre_DB -p PASSWORD --createdb
 
 $ {"message": "Database NOMBRE_DB created succesfully"}
 
+
 Crear usuarios en el server MySql
+
 $ python3 mySqlManager.py -e develoment -c NOMBRE_USUARIO -p PASSWORD --createdb
 
 $ {"message": "User NOMBRE_USUARIO added succesfully"}
 
+
 Borrar usuarios en el server MySql
+
 $ python3 mySqlManager.py -e develoment -c NOMBRE_USUARIO ---deleteuser
 
 $ {"message": "User NOMBRE_USUARIO deleted succesfully"}
