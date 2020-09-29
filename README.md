@@ -45,6 +45,8 @@ optional arguments:
 
 --showdbs Muestra todas las base de datos
 
+--deleteuser Borra un usuario de la base de datos
+
 #### Ejemplos:
 
 Mostrar todas las base de datos desde el server MySql
