@@ -26,17 +26,27 @@ class db:
 
         return response
 
-    def createUser(self,
-                   userName,
-                   password,
-                   querynum=0,
-                   updatenum=0,
-                   connection_num=0):
+    def listUsers(self):
+        try:
+            with self.connector.cursor() as cursor:
+
+                sqlListUsers = (f"SELECT user FROM mysql.user")
+                cursor.execute(sqlListUsers)
+                response = [
+                    listUsers['user'] for listUsers in cursor.fetchall()
+                ]
+
+                response = {"users": response}
+        finally:
+            self.connector.close()
+
+        return response
+
+    def createUser(self, userName, password, querynum=0, updatenum=0, connection_num=0):
 
         try:
             with self.connector.cursor() as cursor:
-                sqlCreateUser = "CREATE USER '{}'@'localhost' IDENTIFIED BY '{}';".format(
-                    userName, password)
+                sqlCreateUser = f"CREATE USER '{userName}'@'localhost' IDENTIFIED BY '{password}';"
                 cursor.execute(sqlCreateUser)
                 self.connector.commit()
                 response = {"message": f"User {userName} added succesfully"}
@@ -45,7 +55,7 @@ class db:
 
         return response
 
-    def createDB(self, dbName, dbPass):
+    def createDB(self, dbName):
 
         try:
             with self.connector.cursor() as cursor:
@@ -58,10 +68,22 @@ class db:
 
         return response
 
+    def deleteDB(self, dbName):
+        try:
+            with self.connector.cursor() as cursor:
+                sqlDeleteDB = "DROP DATABASE " + dbName
+                cursor.execute(sqlDeleteDB)
+                self.connector.commit()
+                response = {"message": f"Database {dbName} deleted succesfully"}
+        finally:
+            self.connector.close()
+
+        return response
+
     def deleteUser(self, userName):
         try:
             with self.connector.cursor() as cursor:
-                sqlCreateDB = "DROP USER " + userName
+                sqlCreateDB = f"DELETE FROM mysql.user WHERE user = '{userName}'"
                 cursor.execute(sqlCreateDB)
                 self.connector.commit()
                 response = {"message": f"User {userName} deleted succesfully"}
